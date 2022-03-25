@@ -1,0 +1,23 @@
+* adm-clim-lib
+
+A collection of utilities for application in CLIM
+
+** Contents
+
+- treeview.lisp: a CLIM treeview gadget. An application that want use
+  treeview must have a command-table that inherit from :treeview
+  command-table.
+- clim-datetime.lisp: presentations stuff for the =local-time:timestamp= type.
+- history.lisp: presentation history persistence. Very buggy almost
+  useless for the moment.
+- zelig.lisp: a presentation that have on the context menu also the
+  commands defined on the presentations for which a translator is
+  defined. An application that want use zelig must have a
+  command-table that inherit from :zelig command-table.
+- display-history.lisp: a clim-stream-pane that save the views in a
+  history and therefore the undo/redo of display is possible.
+
+** License
+
+MIT License
+
