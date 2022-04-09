@@ -5,6 +5,9 @@
   (:export
    ;;;; timestamp
    #:timestamp
+   #:open-calendar
+   #:choose-calendar
+   #:calendar-choose
    ;;;; history
    #:store-history-application-mixin
    ;;;; display
@@ -18,7 +21,9 @@
    ;;;; zelig
    #:zelig
    #:pane-with-display-history-mixin
+   ;;;; display-history
    #:application-with-display-history-pane
    #:undo-display-history
    #:redo-display-history)
-  (:local-nicknames (#:a #:alexandria)))
+  (:local-nicknames (#:a #:alexandria)
+                    (#:lt #:local-time)))
