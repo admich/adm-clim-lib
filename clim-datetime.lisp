@@ -32,15 +32,12 @@
          (cmonth (local-time:timestamp-month cdate))
          (cyear (local-time:timestamp-year cdate))
          (days-in-month (local-time:days-in-month cmonth cyear))
-         (start-day-of-week (local-time:timestamp-day-of-week
-                             (local-time:encode-timestamp 0 0 0 0 1 cmonth cyear)))
-         (stop-day-of-week (local-time:timestamp-day-of-week
-                            (local-time:encode-timestamp 0 0 0 0 days-in-month cmonth cyear)))
-         (start-day (lt:timestamp- (local-time:encode-timestamp 0 0 0 0 1 cmonth cyear)
-                                   start-day-of-week :day))
-         (stop-day (lt:timestamp+ (local-time:encode-timestamp 0 0 0 0 days-in-month cmonth cyear)
-                                   (- 6 stop-day-of-week) :day))
-         (days (loop :for d = start-day :then (lt:timestamp+ d 1 :day) :while (lt:timestamp<= d stop-day)
+         (start-day (lt:adjust-timestamp
+                        (lt:timestamp-minimize-part cdate :day) (:offset :day-of-week :sunday)))
+         (stop-day (lt:adjust-timestamp
+                       (lt:encode-timestamp 0 0 0 0 days-in-month cmonth cyear) (:offset :day-of-week :saturday)))
+         (days (loop :for d = start-day :then (lt:timestamp+ d 1 :day)
+                     :while (lt:timestamp<= d stop-day)
                      :collect d)))
     (setf (stream-cursor-position pane) (values 10 10))
     (formatting-table ()
