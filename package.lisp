@@ -16,6 +16,7 @@
    #:display-pane
    #:display-pane-with-view
    ;;;; treeview
+   #:treeview ; the command table
    #:treeview-pane
    #:expandable-graph-node
    ;;;; zelig

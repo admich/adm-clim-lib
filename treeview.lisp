@@ -26,10 +26,10 @@
       (format stream " - ")
       (format stream " + ")))
 
-(define-command-table :treeview)
+(define-command-table treeview)
 
 (define-presentation-action toggle-treeview
-    (expandable-graph-node nil :treeview
+    (expandable-graph-node nil treeview
                            :menu nil
                            :documentation "Expand/Shrink tree node"
                            :pointer-documentation "Expand/Shrink tree node"

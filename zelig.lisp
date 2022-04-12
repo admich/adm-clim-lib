@@ -9,12 +9,12 @@
 
 (defclass zelig () ())
 
-(define-command-table :zelig)
+(define-command-table zelig)
 
 (define-presentation-type zelig ())
 
 (define-presentation-action zelig-menu
-    (zelig nil :zelig
+    (zelig nil zelig
        :documentation "Menu"
        :menu nil
        :gesture :menu
