@@ -2,7 +2,7 @@
 
 (in-package #:adm-clim-lib)
 
-(define-presentation-type timestamp () :options ((format '(:year "-" (:month 2) "-" (:day 2)))))
+(define-presentation-type timestamp () :options ((format lt:+iso-8601-format+)))
 
 (define-presentation-method present (object (type timestamp) stream view &key)
   (declare (ignore view))
