@@ -21,8 +21,8 @@
    #:expandable-graph-node
    ;;;; zelig
    #:zelig
-   #:pane-with-display-history-mixin
    ;;;; display-history
+   #:pane-with-display-history-mixin
    #:application-with-display-history-pane
    #:undo-display-history
    #:redo-display-history)

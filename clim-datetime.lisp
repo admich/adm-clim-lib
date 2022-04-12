@@ -4,9 +4,9 @@
 
 (define-presentation-type timestamp () :options ((format lt:+iso-8601-format+)))
 
-(define-presentation-method present (object (type timestamp) stream view &key)
+(define-presentation-method present (object (type timestamp) stream view &key acceptably)
   (declare (ignore view))
-  (format-timestring stream object :format format))
+  (write-token (format-timestring nil object :format format) stream :acceptably acceptably))
 
 ;;;; [wip] calendar application
 (define-application-frame calendar ()
