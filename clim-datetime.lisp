@@ -173,7 +173,9 @@
                                                                  :frame-type :override-redirect)))
                                    (replace-input stream (present-to-string date 'timestamp)))))))))
         (let* ((result (read-token stream))
-               (datetime (chronicity:parse result)))
+               (datetime (or
+                          (lt:parse-timestring result :fail-on-error nil)
+                          (chronicity:parse result))))
           (if datetime
               (values datetime type)
               (input-not-of-required-type result type)))))))
