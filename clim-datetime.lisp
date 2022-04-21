@@ -2,13 +2,27 @@
 
 (in-package #:adm-clim-lib)
 
-(define-presentation-type timestamp () :options ((format lt:+iso-8601-format+)))
+(define-presentation-type timestamp (&optional low high) :options ((format lt:+iso-8601-format+)))
+
+(define-presentation-method presentation-typep (object (type timestamp))
+  (and (or (eq low '*) (lt:timestamp<= low object))
+       (or (eq high '*) (lt:timestamp<= object high))))
+
+(define-presentation-method presentation-subtypep ((type timestamp) maybe-supertype)
+  (with-presentation-type-parameters (timestamp maybe-supertype)
+    (let ((super-low low)
+          (super-high high))
+      (with-presentation-type-parameters (timestamp type)
+        (values
+         (and (or (eq super-low '*)  (and (typep low 'timestamp) (lt:timestamp<= super-low low)))
+              (or (eq super-high '*)  (and (typep high 'timestamp) (lt:timestamp<= high super-high))))
+         t)))))
 
 (define-presentation-method present (object (type timestamp) stream view &key acceptably)
   (declare (ignore view))
   (write-token (format-timestring nil object :format format) stream :acceptably acceptably))
 
-;;;; [wip] calendar application
+;;;; calendar application
 (define-application-frame calendar ()
   ((current-date :initarg :current-date :accessor current-date :initform (today))
    (frame-type :initarg :frame-type :accessor frame-type :initform nil))
