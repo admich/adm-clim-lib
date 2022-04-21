@@ -22,6 +22,12 @@
   (declare (ignore view))
   (write-token (format-timestring nil object :format format) stream :acceptably acceptably))
 
+(define-presentation-type date (&optional low high) :options ((format '(:year "-" (:month 2) "-" (:day 2)))) :inherit-from 'timestamp)
+
+(define-presentation-method presentation-typep (object (type date))
+  (and (call-next-method)
+       (typep object 'date)))
+
 ;;;; calendar application
 (define-application-frame calendar ()
   ((current-date :initarg :current-date :accessor current-date :initform (today))
@@ -143,7 +149,6 @@
     (result frame)))
 
 (defmethod run-frame-top-level :before ((frame calendar-choose) &key left top &allow-other-keys)
-  (format *debug-io* "run: ~a ~a~%" left top)
   (multiple-value-bind (x y) (pointer-position (port-pointer (port frame)))
     (move-sheet (frame-top-level-sheet frame) (or left x) (or top y))))
 
