@@ -24,6 +24,10 @@
 
 (define-presentation-type date (&optional low high) :options ((format '(:year "-" (:month 2) "-" (:day 2)))) :inherit-from 'timestamp)
 
+(define-presentation-method present (object (type date) stream view &key acceptably)
+  (declare (ignore view))
+  (write-token (format-timestring nil object :format format) stream :acceptably acceptably))
+
 (define-presentation-method presentation-typep (object (type date))
   (and (call-next-method)
        (typep object 'date)))
