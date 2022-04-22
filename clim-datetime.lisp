@@ -38,6 +38,18 @@
    (frame-type :initarg :frame-type :accessor frame-type :initform nil))
   (:pane (make-pane 'application-pane :display-function 'display-pane)))
 
+(define-gesture-name quit-calendar :keyboard (#\q :control))
+(define-gesture-name quit-calendar :keyboard (#\g :control) :unique nil)
+(define-gesture-name quit-calendar :keyboard (#\c :control) :unique nil)
+(define-gesture-name quit-calendar :keyboard :Escape :unique nil)
+
+(define-calendar-command (com-quit-calendar :keystroke quit-calendar)
+    ()
+  (frame-exit *application-frame*))
+
+(defmethod clime:find-frame-type ((frame calendar))
+  (frame-type frame))
+
 (defun decrease-month (frame)
   (let ((date (current-date frame)))
     (setf (current-date frame)
@@ -105,38 +117,37 @@
                                                              +gray+))
                           (format t "~d" (local-time:timestamp-day date)))))))))))))))
 
-(defun open-calendar (&key (current-date (today)) master-frame new-process)
+(defmethod run-frame-top-level :before ((frame calendar) &key left top &allow-other-keys)
+  (multiple-value-bind (x y) (pointer-position (port-pointer (port frame)))
+    (move-sheet (frame-top-level-sheet frame) (or left x) (or top y))))
+
+(defun open-calendar (&key (current-date (today)) master-frame new-process top left frame-type)
   (let ((frame (make-application-frame 'calendar
                                        :current-date current-date
                                        :calling-frame master-frame
+                                       :frame-type frame-type
+                                       :top top
+                                       :left left
                                        :width 250
                                        :height 200)))
     (if new-process
-        (clim-sys:make-process (lambda () (run-frame-top-level frame)) :name "calendar")
-        (run-frame-top-level frame))))
+        (clim-sys:make-process (lambda () (run-frame-top-level frame :left left :top top)) :name "calendar")
+        (run-frame-top-level frame :left left :top top))))
 
 (define-application-frame calendar-choose (calendar)
   ((%result :initform nil :initarg :result :accessor result))
   (:pane (make-pane 'application-pane :display-function 'display-pane
                                       :background +light-slate-grey+)))
 
-(define-calendar-choose-command (com-select-date)
-    ((timestamp 'timestamp :gesture :select))
-  (setf (result *application-frame*) timestamp)
-  (frame-exit *application-frame*))
-
-(define-gesture-name quit-calendar :keyboard (#\q :control))
-(define-gesture-name quit-calendar :keyboard (#\g :control) :unique nil)
-(define-gesture-name quit-calendar :keyboard (#\c :control) :unique nil)
-(define-gesture-name quit-calendar :keyboard :Escape :unique nil)
-
-(define-calendar-choose-command (com-quit :keystroke quit-calendar)
+(define-calendar-choose-command (com-abort-choose-date :keystroke quit-calendar)
     ()
   (setf (result *application-frame*) nil)
   (frame-exit *application-frame*))
 
-(defmethod clime:find-frame-type ((frame calendar-choose))
-  (frame-type frame))
+(define-calendar-choose-command (com-select-date)
+    ((timestamp 'timestamp :gesture :select))
+  (setf (result *application-frame*) timestamp)
+  (frame-exit *application-frame*))
 
 (defun choose-date (&key (current-date (today)) default master-frame top left frame-type)
   (let ((frame (make-application-frame 'calendar-choose
@@ -152,10 +163,7 @@
     (run-frame-top-level frame :left left :top top)
     (result frame)))
 
-(defmethod run-frame-top-level :before ((frame calendar-choose) &key left top &allow-other-keys)
-  (multiple-value-bind (x y) (pointer-position (port-pointer (port frame)))
-    (move-sheet (frame-top-level-sheet frame) (or left x) (or top y))))
-
+;; accept method with-input-editing
 (define-presentation-method accept ((type timestamp) stream (view textual-view)
                                                      &key (default nil defaultp)
                                                      (default-type type))
