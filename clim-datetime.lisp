@@ -192,13 +192,6 @@
               (values datetime type)
               (input-not-of-required-type result type)))))))
 
-;; pull request the following in McCLIM
-(climi::def-stream-method graft
-    ((stream standard-encapsulating-stream)))
-
-(climi::def-stream-method port
-    ((stream standard-encapsulating-stream)))
-
 ;; TODO/IDEAS:
 ;; in acceptparse stream and set widget date
 ;; parameter of presentation (low high)
