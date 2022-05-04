@@ -197,9 +197,9 @@
                                    (replace-input stream (present-to-string date 'timestamp)))))))))
         (let* ((result (read-token stream))
                (datetime (or
-                          (lt:parse-timestring result :fail-on-error nil)
+                          (lt:parse-rfc3339-timestring result :fail-on-error nil)
                           (chronicity:parse result))))
-          (if datetime
+          (if (presentation-typep datetime type)
               (values datetime type)
               (input-not-of-required-type result type)))))))
 
