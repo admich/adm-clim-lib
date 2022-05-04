@@ -62,6 +62,17 @@
           (lt:timestamp+ date 1 :month))
     (redisplay-frame-panes frame)))
 
+(define-gesture-name next-month :keyboard (#\n :control))
+(define-gesture-name prev-month :keyboard (#\p :control))
+
+(define-calendar-command (com-next-month :keystroke next-month)
+    ()
+  (increase-month *application-frame*))
+
+(define-calendar-command (com-previous-month :keystroke prev-month)
+    ()
+  (decrease-month *application-frame*))
+
 (defmethod display-pane ((frame calendar) pane)
   (let* ((*standard-output* pane)
          (cdate (current-date frame))
