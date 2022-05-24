@@ -115,6 +115,6 @@
                (when (expanded node)
                  (dolist (node (funcall inferior-producer node))
                    (print-node node (+ indent 20))))))
-      (dolist (node (funcall (treeview-pane-roots pane) frame))
-        (formatting-table (pane :x-spacing 50 :equalize-column-widths t)
+      (formatting-table (pane :x-spacing 50 :equalize-column-widths t)
+        (dolist (node (funcall (treeview-pane-roots pane) frame))
           (print-node node 0))))))
