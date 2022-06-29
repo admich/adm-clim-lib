@@ -73,7 +73,7 @@
 (defclass tabular-view (view)
   ())
 
-(defconstant +tabular-view+ (make-instance 'tabular-view))
+(defparameter +tabular-view+ (make-instance 'tabular-view))
 
 (defmethod display-pane-with-view (frame (pane treeview-pane) (view tabular-view))
   (with-slots (printer inferior-producer expanded-table tabular-printers) pane
