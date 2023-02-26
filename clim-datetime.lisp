@@ -132,13 +132,14 @@
   (multiple-value-bind (x y) (pointer-position (port-pointer (port frame)))
     (move-sheet (frame-top-level-sheet frame) (or left x) (or top y))))
 
-(defun open-calendar (&key (current-date (today)) master-frame new-process top left frame-type)
+(defun open-calendar (&key (current-date (today)) master-frame new-process top left bottom frame-type)
   (let ((frame (make-application-frame 'calendar
                                        :current-date current-date
                                        :calling-frame master-frame
                                        :frame-type frame-type
                                        :top top
                                        :left left
+                                       :bottom bottom
                                        :width 250
                                        :height 200)))
     (if new-process
