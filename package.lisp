@@ -25,6 +25,8 @@
    #:pane-with-display-history-mixin
    #:application-with-display-history-pane
    #:undo-display-history
-   #:redo-display-history)
+   #:redo-display-history
+   ;;;; no-gui-application
+   #:no-gui-application)
   (:local-nicknames (#:a #:alexandria)
                     (#:lt #:local-time)))

@@ -16,7 +16,7 @@ A collection of utilities for application in CLIM
   command-table that inherit from ADM-CLIM-LIB:ZELIG command-table.
 - display-history.lisp: a clim-stream-pane that save the views in a
   history and therefore the undo/redo of display is possible.
-
+- no-gui-application.lisp: an application-frame without frame
 ** License
 
 MIT License

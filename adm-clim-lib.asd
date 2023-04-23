@@ -12,4 +12,5 @@
                (:file "treeview")
                (:file "history")
                (:file "zelig")
-               (:file "display-history")))
+               (:file "display-history")
+               (:file "no-gui-application")))
