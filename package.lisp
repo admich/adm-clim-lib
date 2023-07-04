@@ -5,6 +5,7 @@
   (:export
    ;;;; timestamp
    #:timestamp
+   #:date
    #:open-calendar
    #:choose-calendar
    #:calendar-choose
