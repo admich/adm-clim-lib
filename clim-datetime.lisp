@@ -176,6 +176,17 @@
     (result frame)))
 
 ;; accept method with-input-editing
+(defgeneric parse-timestamp (string type)
+  (:documentation "Parse a string STRING and return a timestamp of type TYPE.")
+  (:method (string type)
+    (or
+     (lt:parse-rfc3339-timestring string :fail-on-error nil)
+     (chronicity:parse string)))
+  (:method (string (type (eql 'date)))
+    (let ((timestamp (call-next-method)))
+      (when (typep timestamp 'lt:timestamp)
+        (lt:make-timestamp :nsec 0 :sec 0 :day (lt:day-of timestamp))))))
+
 (define-presentation-method accept ((type timestamp) stream (view textual-view)
                                                      &key (default nil defaultp)
                                                      (default-type type))
@@ -197,9 +208,7 @@
                                                                  :frame-type :override-redirect)))
                                    (replace-input stream (present-to-string date 'timestamp)))))))))
         (let* ((result (read-token stream))
-               (datetime (or
-                          (lt:parse-rfc3339-timestring result :fail-on-error nil)
-                          (chronicity:parse result))))
+               (datetime (parse-timestamp result type)))
           (if (presentation-typep datetime type)
               (values datetime type)
               (input-not-of-required-type result type)))))))
