@@ -185,7 +185,9 @@
   (:method (string (type (eql 'date)))
     (let ((timestamp (call-next-method)))
       (when (typep timestamp 'lt:timestamp)
-        (lt:make-timestamp :nsec 0 :sec 0 :day (lt:day-of timestamp))))))
+        (lt:timestamp+
+         (lt:timestamp-minimize-part timestamp :hour)
+         (lt:timestamp-subtimezone timestamp nil) :sec)))))
 
 (define-presentation-method accept ((type timestamp) stream (view textual-view)
                                                      &key (default nil defaultp)
